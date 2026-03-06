@@ -48,7 +48,7 @@ This project utilized an AI-assisted development process to:
 
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/your-username/supercar-3d-experience.git](https://github.com/your-username/supercar-3d-experience.git)
+   git clone [https://github.com/your-username/supercar-3d-experience.git](https://github.com/TN1608/3d-cars-landing-page.git)
    ```
 2. Install dependencies:
   ```bash
