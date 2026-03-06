@@ -15,7 +15,15 @@ export function Model(props) {
   const { nodes, materials } = useGLTF('/models/mclaren_f1_gtr_longtail-transformed.glb')
   return (
     <group {...props} dispose={null}>
-      <mesh geometry={nodes.Object_8.geometry} material={materials.mclaren_f1gtr_paint} scale={9.344} />
+      <mesh geometry={nodes.Object_8.geometry} scale={9.344}>
+        <meshPhysicalMaterial
+          {...materials.mclaren_f1gtr_paint}
+          clearcoat={1}
+          clearcoatRoughness={0.05}
+          roughness={0.2}
+          metalness={0.8}
+        />
+      </mesh>
       <mesh geometry={nodes.Object_10.geometry} material={materials.mclaren_f1gtr_paint_carbon_matte} scale={9.344} />
       <mesh geometry={nodes.Object_12.geometry} material={materials.mclaren_f1gtr_windows2} scale={9.344} />
       <mesh geometry={nodes.Object_14.geometry} material={materials.mclaren_f1gtr_windows} scale={9.344} />
@@ -28,8 +36,12 @@ export function Model(props) {
       <mesh geometry={nodes.Object_53.geometry} material={materials.generic_carbon} scale={9.344} />
       <mesh geometry={nodes.Object_62.geometry} material={materials.mclaren_f1gtr_disc} position={[7.554, 2.896, 12.726]} scale={9.344} />
       <mesh geometry={nodes.Object_76.geometry} material={materials.mclaren_f1gtr_lights} scale={9.344} />
-      <mesh geometry={nodes.Object_78.geometry} material={materials.lightHead} scale={9.344} />
-      <mesh geometry={nodes.Object_84.geometry} material={materials.mclaren_f1gtr_taillight} scale={9.344} />
+      <mesh geometry={nodes.Object_78.geometry} scale={9.344}>
+        <meshStandardMaterial {...materials.lightHead} emissive="#ffffff" emissiveIntensity={15} />
+      </mesh>
+      <mesh geometry={nodes.Object_84.geometry} scale={9.344}>
+        <meshStandardMaterial {...materials.mclaren_f1gtr_taillight} emissive="#ff0000" emissiveIntensity={12} />
+      </mesh>
       <mesh geometry={nodes.Object_89.geometry} material={materials.mclaren_f1gtr_interior} scale={9.344} />
       <mesh geometry={nodes.Object_95.geometry} material={materials.generic_tread} position={[7.554, 2.896, 12.726]} scale={9.344} />
       <mesh geometry={nodes.Object_97.geometry} material={materials.generic_tyre} position={[7.554, 2.896, 12.726]} scale={9.344} />

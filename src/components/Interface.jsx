@@ -54,7 +54,7 @@ export const Interface = ({ isPreviewMode, setIsPreviewMode, activeCar }) => {
                 </div>
 
                 {/* PREVIEW BUTTON handled in Controls.jsx but kept mirror here for consistent UI if needed */}
-                {!isPreviewMode && (
+                {/* {!isPreviewMode && (
                     <div className="absolute bottom-12 right-12 pointer-events-auto">
                         <button
                             onClick={() => setIsPreviewMode(true)}
@@ -67,7 +67,7 @@ export const Interface = ({ isPreviewMode, setIsPreviewMode, activeCar }) => {
                             <span className="font-['Orbitron'] tracking-widest font-bold text-sm">ENTER PREVIEW</span>
                         </button>
                     </div>
-                )}
+                )} */}
             </section>
 
             {/* SECTION 1: AERODYNAMICS */}

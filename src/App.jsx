@@ -10,6 +10,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import { CARS } from './constants/cars';
 import { PLAYLIST } from './constants/playlist';
+import { Preloader } from './components/Preloader';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,6 +18,24 @@ function App() {
     const [isPreviewMode, setIsPreviewMode] = useState(false);
     const [activeCar, setActiveCar] = useState(CARS[0].id);
     const [activeTrack, setActiveTrack] = useState(PLAYLIST[0]);
+    const [isChangingCar, setIsChangingCar] = useState(false);
+
+    useEffect(() => {
+        // Handle car change sequence
+        const handleCarChange = () => {
+            setIsChangingCar(true);
+
+            // Force scroll to top instantly
+            window.scrollTo({ top: 0, behavior: 'instant' });
+
+            // Small delay to allow preloader to show before 3D swaps
+            setTimeout(() => {
+                setIsChangingCar(false);
+            }, 1000);
+        };
+
+        handleCarChange();
+    }, [activeCar]);
 
     useEffect(() => {
         const lenis = new Lenis({
@@ -87,6 +106,9 @@ function App() {
 
             {/* CUSTOM CURSOR */}
             <CustomCursor />
+
+            {/* PRELOADER */}
+            <Preloader isChangingCar={isChangingCar} />
         </main>
     )
 }

@@ -16,12 +16,16 @@ export function Model(props) {
   return (
     <group {...props} dispose={null}>
       <mesh geometry={nodes.Object_4.geometry} material={materials.INT_DECAL_WHITE} position={[0, 0.438, 0.379]} rotation={[-Math.PI / 2, 0, 0]} scale={0.01} />
-      <mesh geometry={nodes.Object_6.geometry} material={materials.EXT_EMISSIVE} rotation={[-Math.PI / 2, 0, 0]} />
+      <mesh geometry={nodes.Object_6.geometry} rotation={[-Math.PI / 2, 0, 0]}>
+        <meshStandardMaterial {...materials.EXT_EMISSIVE} emissive="#ffffff" emissiveIntensity={15} />
+      </mesh>
       <mesh geometry={nodes.Object_10.geometry} material={materials.INT_plastic_red} position={[0, 0.333, 0.089]} rotation={[-Math.PI / 2, 0, 0]} scale={0.01} />
       <mesh geometry={nodes.Object_12.geometry} material={materials.EXT_BLACK_GLASS} rotation={[-Math.PI / 2, 0, 0]} />
       <mesh geometry={nodes.Object_14.geometry} material={materials.EXT_EMISSIVE_NM} position={[0, 1.044, 1.313]} rotation={[-Math.PI / 2, 0, 0]} scale={0.026} />
       <mesh geometry={nodes.Object_16.geometry} material={materials.EXT_BLACK_MISC} position={[0, 1.044, 1.313]} rotation={[-Math.PI / 2, 0, 0]} scale={0.026} />
-      <mesh geometry={nodes.Object_18.geometry} material={materials.EXT_GLASS_RED} rotation={[-Math.PI / 2, 0, 0]} />
+      <mesh geometry={nodes.Object_18.geometry} rotation={[-Math.PI / 2, 0, 0]}>
+        <meshStandardMaterial {...materials.EXT_GLASS_RED} emissive="#ff0000" emissiveIntensity={10} transparent opacity={0.6} />
+      </mesh>
       <mesh geometry={nodes.Object_24.geometry} material={materials.EXT_GLASS} position={[0, 1.044, 1.313]} rotation={[-Math.PI / 2, 0, 0]} scale={0.026} />
       <mesh geometry={nodes.Object_26.geometry} material={materials.MIRROR_PLACEMENT} position={[0, 1.044, 1.313]} rotation={[-Math.PI / 2, 0, 0]} scale={0.026} />
       <mesh geometry={nodes.Object_30.geometry} material={materials.INT_GAUGE_GLASS} position={[0, 0.394, 0.292]} rotation={[-Math.PI / 2, 0, 0]} scale={0.01} />
@@ -38,7 +42,15 @@ export function Model(props) {
       <mesh geometry={nodes.Object_89.geometry} material={materials.EXT_PLASTIC} rotation={[-Math.PI / 2, 0, 0]} />
       <mesh geometry={nodes.Object_93.geometry} material={materials.EXT_PLASTIC_GLOSS} rotation={[-Math.PI / 2, 0, 0]} />
       <mesh geometry={nodes.Object_97.geometry} material={materials.EXT_CARBON} position={[0, 1.044, 1.313]} rotation={[-Math.PI / 2, 0, 0]} scale={0.026} />
-      <mesh geometry={nodes.Object_101.geometry} material={materials.ext_Body_Paint} position={[0, 1.044, 1.313]} rotation={[-Math.PI / 2, 0, 0]} />
+      <mesh geometry={nodes.Object_101.geometry} position={[0, 1.044, 1.313]} rotation={[-Math.PI / 2, 0, 0]}>
+        <meshPhysicalMaterial
+          {...materials.ext_Body_Paint}
+          clearcoat={1}
+          clearcoatRoughness={0.05}
+          roughness={0.15}
+          metalness={0.8}
+        />
+      </mesh>
       <mesh geometry={nodes.Object_111.geometry} material={materials.ext_Wheel_paint1} position={[0.915, 0.352, 1.172]} rotation={[-1.571, 1.536, 1.571]} />
       <mesh geometry={nodes.Object_113.geometry} material={materials.EXT_RIM_PLASTIC_GLOSS} position={[0.915, 0.352, 1.172]} rotation={[-1.571, 1.536, 1.571]} />
       <mesh geometry={nodes.Object_115.geometry} material={materials.EXT_RIM_CHROME} position={[0.915, 0.352, 1.172]} rotation={[-1.571, 1.536, 1.571]} />

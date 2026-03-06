@@ -4,7 +4,7 @@ export const CARS = [
         name: "McLaren 720S GT3",
         brand: "McLaren",
         modelCode: "GT3",
-        thumbnail: "https://images.unsplash.com/photo-1620882354502-3932e652bfb0?q=80&w=200&auto=format&fit=crop",
+        thumbnail: "/mclaren7205.webp",
         componentName: "Mclaren_gt3",
         specs: {
             hp: "720",
@@ -22,7 +22,7 @@ export const CARS = [
         name: "McLaren W1",
         brand: "McLaren",
         modelCode: "W1",
-        thumbnail: "https://images.unsplash.com/photo-1614200187524-dc4b892acf16?q=80&w=200&auto=format&fit=crop",
+        thumbnail: "/mclarenw1.jpg", // Fallback to 7205 as it's high quality
         componentName: "Mclaren_w1",
         specs: {
             hp: "1275",
@@ -40,7 +40,7 @@ export const CARS = [
         name: "McLaren F1 GTR",
         brand: "McLaren",
         modelCode: "F1 GTR",
-        thumbnail: "https://images.unsplash.com/photo-1544839352-7883b2767078?q=80&w=200&auto=format&fit=crop",
+        thumbnail: "/mclarenf1.jpg",
         componentName: "Mclaren_f1_gtr_longtail",
         specs: {
             hp: "600",
@@ -58,7 +58,7 @@ export const CARS = [
         name: "BMW M4 Widebody",
         brand: "BMW",
         modelCode: "M4",
-        thumbnail: "https://images.unsplash.com/photo-1623862668512-11a51010373d?q=80&w=200&auto=format&fit=crop",
+        thumbnail: "/bmwm4.jpg",
         componentName: "Bmw_m4_widebody",
         specs: {
             hp: "510+",

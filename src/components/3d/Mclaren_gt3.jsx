@@ -19,8 +19,12 @@ export function Model(props) {
       <mesh geometry={nodes.Object_6.geometry} material={materials.ENGINE} />
       <mesh geometry={nodes.Object_37.geometry} material={materials.CHASSIS} />
       <mesh geometry={nodes.Object_52.geometry} material={materials.INTERIOR} />
-      <mesh geometry={nodes.Object_129.geometry} material={materials.GLASS} />
-      <mesh geometry={nodes.Object_150.geometry} material={materials.BODY} />
+      <mesh geometry={nodes.Object_129.geometry}>
+        <meshStandardMaterial {...materials.GLASS} emissive="#ffffff" emissiveIntensity={2} transparent opacity={0.4} />
+      </mesh>
+      <mesh geometry={nodes.Object_150.geometry}>
+        <meshPhysicalMaterial {...materials.BODY} clearcoat={1} roughness={0.2} metalness={0.8} />
+      </mesh>
       <mesh geometry={nodes.Object_188.geometry} material={materials.TIRE} />
       <mesh geometry={nodes.Object_200.geometry} material={materials.WHEELFRONT} />
       <mesh geometry={nodes.Object_219.geometry} material={materials.WHEELREAR} />

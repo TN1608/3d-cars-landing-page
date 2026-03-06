@@ -15,7 +15,15 @@ export function Model(props) {
   const { nodes, materials } = useGLTF('/models/bmw_m4_widebody-transformed.glb')
   return (
     <group {...props} dispose={null}>
-      <mesh geometry={nodes.Object_8.geometry} material={materials.PaletteMaterial001} position={[0, 0.424, 0]} />
+      <mesh geometry={nodes.Object_8.geometry} position={[0, 0.424, 0]}>
+        <meshPhysicalMaterial
+          {...materials.PaletteMaterial001}
+          clearcoat={1}
+          clearcoatRoughness={0.05}
+          roughness={0.15}
+          metalness={0.9}
+        />
+      </mesh>
       <mesh geometry={nodes.Object_14.geometry} material={materials.PaletteMaterial002} position={[0, 0.424, 0]} />
       <mesh geometry={nodes.Object_41.geometry} material={materials.bBMW_M4CompetitionG82TNR0_2021EngineA_Material1} position={[0, 0.444, 0]} rotation={[Math.PI / 2, 0, 0]} scale={4.822} />
       <mesh geometry={nodes.Object_44.geometry} material={materials.bBMW_M4CompetitionG82TNR0_2021Coloured_Material_004} position={[0, 0.444, 0]} rotation={[Math.PI / 2, 0, 0]} scale={4.822} />
@@ -29,7 +37,9 @@ export function Model(props) {
       <mesh geometry={nodes.Object_73.geometry} material={materials.bBMW_M4CompetitionG82TNR0_2021GrilleNoAlpha8A_Material1} position={[0, 0.446, 0]} rotation={[Math.PI / 2, 0, 0]} scale={4.822} />
       <mesh geometry={nodes.Object_76.geometry} material={materials.bBMW_M4CompetitionG82TNR0_2021BadgeA_Material1} position={[0, 0.446, 0]} rotation={[Math.PI / 2, 0, 0]} scale={4.822} />
       <mesh geometry={nodes.Object_79.geometry} material={materials.PaletteMaterial003} position={[0, 0.446, 0]} rotation={[Math.PI / 2, 0, 0]} scale={4.822} />
-      <mesh geometry={nodes.Object_85.geometry} material={materials.bBMW_M4CompetitionG82TNR0_2021LightA_Material1} position={[0, 0.446, 0]} rotation={[Math.PI / 2, 0, 0]} scale={4.822} />
+      <mesh geometry={nodes.Object_85.geometry} position={[0, 0.446, 0]} rotation={[Math.PI / 2, 0, 0]} scale={4.822}>
+        <meshStandardMaterial {...materials.bBMW_M4CompetitionG82TNR0_2021LightA_Material1} emissive="#ffffff" emissiveIntensity={12} />
+      </mesh>
       <mesh geometry={nodes.Object_88.geometry} material={materials.bBMW_M4CompetitionG82TNR0_2021ManufacturerPlateA_Material1} position={[0, 0.446, 0]} rotation={[Math.PI / 2, 0, 0]} scale={4.822} />
       <mesh geometry={nodes.Object_93.geometry} material={materials.PaletteMaterial004} position={[0, 0.446, 0]} rotation={[Math.PI / 2, 0, 0]} scale={4.822} />
       <mesh geometry={nodes.Object_98.geometry} material={materials.PaletteMaterial005} position={[0, 0.446, 0]} rotation={[Math.PI / 2, 0, 0]} scale={4.822} />
