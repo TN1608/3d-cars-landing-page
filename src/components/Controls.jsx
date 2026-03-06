@@ -335,6 +335,25 @@ export const Controls = ({ isPreviewMode, setIsPreviewMode, activeCar, setActive
                     </button>
                 ))}
             </div>
+
+            {/* ══ INTERACTION HINT (Preview Mode Only) ══ */}
+            <div className={`fixed bottom-32 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-1000 delay-500
+                ${isPreviewMode ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+            >
+                <div className="flex flex-col items-center gap-2">
+                    <div className="flex items-center gap-8 text-white/40 font-['Rajdhani'] text-[9px] tracking-[0.5em] uppercase">
+                        <div className="flex items-center gap-3">
+                            <span className="w-6 h-px bg-white/10" />
+                            <span>LMB to Rotate</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <span className="w-6 h-px bg-white/10" />
+                            <span>Scroll to Zoom</span>
+                        </div>
+                    </div>
+                    <div className="h-4 w-px bg-linear-to-b from-orange-500/50 to-transparent animate-bounce mt-2" />
+                </div>
+            </div>
         </>
     );
 };

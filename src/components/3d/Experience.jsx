@@ -1,4 +1,4 @@
-import { Environment, ContactShadows, MeshReflectorMaterial } from '@react-three/drei'
+import { OrbitControls, Environment, ContactShadows, MeshReflectorMaterial } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber'
 import { useRef, Suspense } from 'react'
 import * as THREE from 'three'
@@ -20,23 +20,12 @@ export const Experience = ({ isPreviewMode, activeCar }) => {
     useCarAnimation(isPreviewMode, orbitAngle);
 
     useFrame((state, delta) => {
-        if (isPreviewMode) {
-            // Cinematic Forza-style camera orbit
-            orbitAngle.current += delta * 0.15;
-            const radius = 9.5;
-
-            const targetX = Math.sin(orbitAngle.current) * radius;
-            const targetZ = Math.cos(orbitAngle.current) * radius;
-            const targetY = 1.2 + Math.sin(orbitAngle.current * 1.2) * 0.2;
-
-            camera.position.lerp(new THREE.Vector3(targetX, targetY, targetZ), 0.05);
-        } else {
+        if (!isPreviewMode) {
             if (modelRef.current) {
                 modelRef.current.rotation.y = gsap.utils.interpolate(modelRef.current.rotation.y, 0, 0.1);
             }
+            camera.lookAt(0, 0.3, 0);
         }
-
-        camera.lookAt(0, 0.3, 0);
     })
 
     const renderCar = () => {
@@ -51,6 +40,21 @@ export const Experience = ({ isPreviewMode, activeCar }) => {
 
     return (
         <>
+            {isPreviewMode && (
+                <OrbitControls
+                    makeDefault
+                    autoRotate
+                    autoRotateSpeed={0.5}
+                    enableZoom={true}
+                    enablePan={false}
+                    minPolarAngle={0}
+                    maxPolarAngle={Math.PI / 1.75}
+                    minDistance={5}
+                    maxDistance={15}
+                    enableDamping
+                    dampingFactor={0.05}
+                />
+            )}
             {/* === CINEMATIC STUDIO LIGHTING === */}
             <ambientLight intensity={0.01} />
 
