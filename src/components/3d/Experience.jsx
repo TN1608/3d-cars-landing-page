@@ -11,7 +11,7 @@ import { Model as MclarenW1 } from './Mclaren_w1'
 import { Model as MclarenF1 } from './Mclaren_f1_gtr_longtail'
 import { Model as BmwM4 } from './Bmw_m4_widebody'
 
-export const Experience = ({ isPreviewMode, activeCar }) => {
+export const Experience = ({ isPreviewMode, activeCar, activeAA }) => {
     const { camera } = useThree()
     const modelRef = useRef()
     const [isAtTop, setIsAtTop] = useState(true);
@@ -135,66 +135,70 @@ export const Experience = ({ isPreviewMode, activeCar }) => {
                     dampingFactor={0.05}
                 />
             )}
-            {/* === CINEMATIC STUDIO LIGHTING === */}
-            <ambientLight intensity={0.01} />
+            {/* === AAA GAME CINEMATIC SHOWCASE LIGHTING === */}
+            <ambientLight intensity={0.5} color="#ffffff" />
+            <Environment preset="studio" environmentIntensity={0.8} />
 
-            {/* STAGE LIGHTING (Top Down Spotlight) */}
+            {/* 1. MAIN HERO SPOTLIGHT (Top-Front, illuminating the hood and windshield) */}
+            <spotLight
+                position={[0, 10, 15]}
+                angle={0.4}
+                penumbra={0.8}
+                intensity={120}
+                color="#ffffff"
+                castShadow
+                shadow-mapSize={[2048, 2048]}
+                shadow-bias={-0.0001}
+            />
+
+            {/* 2. OVERHEAD STUDIO LIGHT (Fills the roof and creates dramatic floor drop-off) */}
             <spotLight
                 position={[0, 15, 0]}
                 angle={0.6}
                 penumbra={0.5}
-                intensity={180}
+                intensity={150}
                 color="#ffffff"
                 castShadow
             />
 
-            {/* Top Softbox (Fills the scene) */}
+            {/* 3. WARM FILL LIGHT (Right side, brings out paint details) */}
             <spotLight
-                position={[0, 12, 0]}
-                angle={1.2}
+                position={[12, 5, 5]}
+                angle={0.8}
                 penumbra={1}
-                intensity={50}
-                color="#ffffff"
+                intensity={80}
+                color="#ffd0a1" // Warm tint
             />
 
-            {/* Main Key Light (Sharp front-oblique highlight) */}
-            <directionalLight
-                position={[-12, 10, 10]}
-                intensity={6}
-                color="#ffffff"
-                castShadow
-                shadow-bias={-0.0001}
-                shadow-mapSize={[2048, 2048]}
-            />
-
-            {/* Subtle Blue/Cool Fill (Opposite side) */}
-            <directionalLight
-                position={[10, 4, -5]}
-                intensity={1.5}
-                color="#c4d9ff"
-            />
-
-            {/* Rim Highlight (White/Cool) */}
+            {/* 4. COOL RIM LIGHT (Back-Left, creates separation from background) */}
             <spotLight
-                position={[0, 6, -10]}
-                angle={0.5}
+                position={[-12, 6, -10]}
+                angle={0.7}
                 penumbra={0.8}
+                intensity={100}
+                color="#a1c4ff" // Cool icy tint
+            />
+
+            {/* 5. LOW AGGRESSIVE FRONT LIGHT (Lights up the grille and splitter) */}
+            <spotLight
+                position={[0, -1, 10]}
+                angle={0.5}
+                penumbra={1}
                 intensity={40}
                 color="#ffffff"
             />
 
-            {/* Headlight simulation points */}
-            <pointLight position={[0.8, -0.1, 2.8]} intensity={4} color="#ffe8b0" distance={5} decay={2} />
-            <pointLight position={[-0.8, -0.1, 2.8]} intensity={4} color="#ffe8b0" distance={5} decay={2} />
+            {/* Dynamic neon floor accents to match the theme (Orange) */}
+            <pointLight position={[3, -0.6, 3]} intensity={5} color="#ff6600" distance={8} decay={2} />
+            <pointLight position={[-3, -0.6, -3]} intensity={5} color="#ff6600" distance={8} decay={2} />
+
+            {/* Headlight simulation points (closer to the car) */}
+            <pointLight position={[0.8, -0.1, 2.5]} intensity={8} color="#ffe8b0" distance={5} decay={2} />
+            <pointLight position={[-0.8, -0.1, 2.5]} intensity={8} color="#ffe8b0" distance={5} decay={2} />
 
             {/* Taillight simulation points */}
-            <pointLight position={[0.6, 0.1, -2.6]} intensity={3} color="#ff1a00" distance={4} decay={2} />
-            <pointLight position={[-0.6, 0.1, -2.6]} intensity={3} color="#ff1a00" distance={4} decay={2} />
-
-            {/* Subtle floor accent */}
-            <pointLight position={[0, -0.6, 2]} intensity={2} color="#ffffff" distance={6} decay={2} />
-
-            <Environment preset="night" environmentIntensity={0.1} />
+            <pointLight position={[0.6, 0.1, -2.4]} intensity={6} color="#ff0000" distance={4} decay={2} />
+            <pointLight position={[-0.6, 0.1, -2.4]} intensity={6} color="#ff0000" distance={4} decay={2} />
 
             <Suspense fallback={null}>
                 <group ref={modelRef} scale={1.0} position={[0, -0.6, 0]}>
@@ -233,7 +237,9 @@ export const Experience = ({ isPreviewMode, activeCar }) => {
             />
 
             {/* POST PROCESSING BLOOM & TONEMAPPING */}
-            <EffectComposer disableNormalPass>
+            {/* key={activeAA} forces the entire post-processing pipeline and WebGLRenderTarget to rebuild 
+                with the new multisampling count, ensuring the Anti-aliasing takes immediate visual effect */}
+            <EffectComposer key={activeAA} disableNormalPass multisampling={activeAA}>
                 <Bloom
                     luminanceThreshold={1}
                     mipmapBlur

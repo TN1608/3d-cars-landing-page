@@ -34,7 +34,7 @@ const VinylDisc = () => (
     </svg>
 );
 
-export const Controls = ({ isPreviewMode, setIsPreviewMode, activeCar, setActiveCar, activeTrack, setActiveTrack }) => {
+export const Controls = ({ isPreviewMode, setIsPreviewMode, activeCar, setActiveCar, activeTrack, setActiveTrack, activeAA, setActiveAA }) => {
     const [isMuted, setIsMuted] = useState(false); // start unmuted → auto-play
     const [volume, setVolume] = useState(1.0);       // 100% by default
     const bgmRef = useRef(null);
@@ -286,12 +286,51 @@ export const Controls = ({ isPreviewMode, setIsPreviewMode, activeCar, setActive
                             </svg>
                         </div>
 
-                        <p className="text-center text-orange-400 font-['Orbitron'] text-[10px] tracking-widest">
+                        <p className="text-center text-orange-400 font-['Orbitron'] text-[10px] tracking-widest -mt-2">
                             {Math.round(volume * 100)}%
                         </p>
                     </PopoverContent>
                 </Popover>
 
+                {/* ── MSAA Graphics Quality Popover ── */}
+                <Popover>
+                    <PopoverTrigger asChild>
+                        <button
+                            className="relative text-white hover:text-orange-500 transition-colors flex items-center justify-center w-8 h-8 hover:scale-110 shrink-0"
+                            title="Graphics Quality (Anti-Aliasing)"
+                        >
+                            {/* Graphic settings icon */}
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.813-6.891-3-3-6.891 3.813a15.994 15.994 0 0 0-4.648 4.764m3.42 3.42 6.842-6.842" />
+                            </svg>
+                            {activeAA > 0 && (
+                                <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-orange-600 border border-black text-[8px] font-bold text-white shadow-sm font-['Orbitron']">
+                                    {activeAA}
+                                </span>
+                            )}
+                        </button>
+                    </PopoverTrigger>
+                    <PopoverContent
+                        side="bottom"
+                        align="center"
+                        sideOffset={14}
+                        className="w-48 bg-black/90 backdrop-blur-xl border border-white/10 rounded-2xl p-3 shadow-2xl flex flex-col gap-3"
+                    >
+                        <span className="text-gray-300 font-['Rajdhani'] text-xs tracking-widest uppercase text-center w-full block">Anti-Aliasing</span>
+                        <div className="grid grid-cols-4 gap-1 bg-black/40 rounded-lg p-1 border border-white/5">
+                            {[0, 2, 4, 8].map(level => (
+                                <button
+                                    key={level}
+                                    onClick={() => setActiveAA(level)}
+                                    className={`py-1.5 text-[10px] font-['Orbitron'] font-bold rounded-md transition-all duration-300
+                                        ${activeAA === level ? 'bg-orange-500 text-white shadow-md' : 'text-gray-500 hover:text-white hover:bg-white/5'}`}
+                                >
+                                    {level === 0 ? 'OFF' : `${level}X`}
+                                </button>
+                            ))}
+                        </div>
+                    </PopoverContent>
+                </Popover>
 
                 {/* Divider */}
                 <div className="h-6 w-px bg-white/15" />

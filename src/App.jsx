@@ -19,6 +19,7 @@ function App() {
     const [activeCar, setActiveCar] = useState(CARS[0].id);
     const [activeTrack, setActiveTrack] = useState(PLAYLIST[0]);
     const [isChangingCar, setIsChangingCar] = useState(false);
+    const [activeAA, setActiveAA] = useState(4); // Default 4x MSAA
 
     useEffect(() => {
         // Handle car change sequence
@@ -76,9 +77,9 @@ function App() {
         <main className="relative w-full min-h-screen bg-neutral-950 overflow-x-hidden selection:bg-orange-500 selection:text-white font-[Rajdhani]">
             {/* FIXED 3D CANVAS BACKGROUND */}
             <div className="fixed inset-0 z-0 pointer-events-none">
-                <Canvas shadows camera={{ position: [0, 2, 10], fov: 30 }}>
+                <Canvas shadows camera={{ position: [0, 2, 10], fov: 30 }} gl={{ antialias: false, powerPreference: "high-performance" }}>
                     <color attach="background" args={['#050505']} />
-                    <Experience isPreviewMode={isPreviewMode} activeCar={activeCar} />
+                    <Experience isPreviewMode={isPreviewMode} activeCar={activeCar} activeAA={activeAA} />
                 </Canvas>
             </div>
 
@@ -95,6 +96,8 @@ function App() {
                 setActiveCar={setActiveCar}
                 activeTrack={activeTrack}
                 setActiveTrack={setActiveTrack}
+                activeAA={activeAA}
+                setActiveAA={setActiveAA}
             />
 
             {/* PREVIEW EXIT BUTTON (Always visible in Preview Mode) */}
