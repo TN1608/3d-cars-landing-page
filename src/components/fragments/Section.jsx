@@ -4,9 +4,13 @@ export const Section = ({ title, subtitle, description, alignment = "left" }) =>
     return (
         <section className={`h-screen w-full flex flex-col justify-center p-12 md:p-24 ${alignment === "right" ? "items-end text-right" : "items-start text-left"} pointer-events-none`}>
             <div className="max-w-2xl">
-                <p className="text-orange-500 font-['Orbitron'] tracking-[0.3em] mb-2 uppercase text-sm font-bold">
-                    {subtitle}
-                </p>
+                <BlurText
+                    text={subtitle}
+                    delay={30}
+                    animateBy="letters"
+                    direction="bottom"
+                    className="text-orange-500 font-['Orbitron'] tracking-[0.3em] mb-4 uppercase text-sm font-bold"
+                />
                 <div className="mb-6">
                     <BlurText
                         text={title}

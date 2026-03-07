@@ -38,17 +38,28 @@ export const Interface = ({ isPreviewMode, setIsPreviewMode, activeCar }) => {
         <div className="w-full">
             {/* SECTION 0: HERO (Sảnh chờ) */}
             <section className="h-screen w-screen flex flex-col justify-end p-12 md:p-24 pointer-events-none relative z-20">
-                <div key={currentCar.id}>
-                    <h1 className="text-[12vw] font-black leading-[0.8] tracking-tighter italic drop-shadow-lg font-['Orbitron'] text-white">
-                        {currentCar.modelCode} <br /> <span className="text-orange-500 uppercase">{currentCar.brand}</span>
-                    </h1>
-                    <div className="mt-4">
+                <div key={currentCar.id} className="mb-12">
+                    <BlurText
+                        text={currentCar.modelCode}
+                        delay={100}
+                        animateBy="letters"
+                        direction="bottom"
+                        className="text-[12vw] font-black leading-[0.8] tracking-tighter italic drop-shadow-lg font-['Orbitron'] text-white"
+                    />
+                    <BlurText
+                        text={currentCar.brand}
+                        delay={100}
+                        animateBy="letters"
+                        direction="top"
+                        className="text-[8vw] text-orange-500 uppercase font-black leading-[0.8] tracking-widest font-['Orbitron']"
+                    />
+                    <div className="mt-8">
                         <BlurText
                             text="SCROLL TO EXPLORE PRECISION"
-                            delay={50}
+                            delay={30}
                             animateBy="words"
                             direction="top"
-                            className="text-gray-300 font-['Rajdhani'] font-bold tracking-widest text-xl drop-shadow"
+                            className="text-gray-400 font-['Rajdhani'] font-bold tracking-[1em] text-xs drop-shadow"
                         />
                     </div>
                 </div>
@@ -98,16 +109,46 @@ export const Interface = ({ isPreviewMode, setIsPreviewMode, activeCar }) => {
             <section ref={performanceRef} className="h-screen w-full flex items-center justify-center p-12 pointer-events-none">
                 <div ref={performanceContentRef} className="bg-black/60 backdrop-blur-xl border border-orange-500/20 p-12 rounded-2xl shadow-[0_0_50px_rgba(255,128,0,0.1)]">
                     <div className="grid grid-cols-2 gap-12 text-center">
-                        <div>
-                            <p className="text-orange-500 font-['Orbitron'] text-sm tracking-widest mb-2 font-bold uppercase">HORSEPOWER</p>
-                            <h3 className="text-6xl font-black text-white font-['Orbitron']">{currentCar.specs.hp}</h3>
+                        <div key={`${activeCar}-hp`}>
+                            <BlurText
+                                text="HORSEPOWER"
+                                delay={20}
+                                animateBy="letters"
+                                direction="bottom"
+                                className="text-orange-500 font-['Orbitron'] text-xs tracking-[0.4em] mb-4 font-bold uppercase justify-center"
+                            />
+                            <BlurText
+                                text={currentCar.specs.hp}
+                                delay={50}
+                                animateBy="letters"
+                                direction="top"
+                                className="text-6xl md:text-7xl font-black text-white font-['Orbitron'] justify-center"
+                            />
                         </div>
-                        <div>
-                            <p className="text-orange-500 font-['Orbitron'] text-sm tracking-widest mb-2 font-bold uppercase">0-100 KM/H</p>
-                            <h3 className="text-6xl font-black text-white font-['Orbitron']">{currentCar.specs.zeroToHundred}</h3>
+                        <div key={`${activeCar}-0100`}>
+                            <BlurText
+                                text="0-100 KM/H"
+                                delay={20}
+                                animateBy="letters"
+                                direction="bottom"
+                                className="text-orange-500 font-['Orbitron'] text-xs tracking-[0.4em] mb-4 font-bold uppercase justify-center"
+                            />
+                            <BlurText
+                                text={currentCar.specs.zeroToHundred}
+                                delay={50}
+                                animateBy="letters"
+                                direction="top"
+                                className="text-6xl md:text-7xl font-black text-white font-['Orbitron'] justify-center"
+                            />
                         </div>
-                        <div className="col-span-2 border-t border-white/10 pt-6 mt-2">
-                            <p className="text-gray-300 font-light italic font-['Rajdhani'] text-xl">"{currentCar.specs.tagline}"</p>
+                        <div className="col-span-2 border-t border-white/10 pt-8 mt-4">
+                            <BlurText
+                                text={`"${currentCar.specs.tagline}"`}
+                                delay={30}
+                                animateBy="words"
+                                direction="top"
+                                className="text-gray-400 font-light italic font-['Rajdhani'] text-xl md:text-2xl justify-center"
+                            />
                         </div>
                     </div>
                 </div>

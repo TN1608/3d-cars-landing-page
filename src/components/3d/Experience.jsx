@@ -1,6 +1,6 @@
 import { OrbitControls, Environment, ContactShadows, MeshReflectorMaterial } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber'
-import { useRef, Suspense } from 'react'
+import { useRef, Suspense, useState, useEffect } from 'react'
 import * as THREE from 'three'
 import gsap from 'gsap'
 import { useCarAnimation } from '../../hooks/useCarAnimation'
@@ -12,21 +12,119 @@ import { Model as MclarenF1 } from './Mclaren_f1_gtr_longtail'
 import { Model as BmwM4 } from './Bmw_m4_widebody'
 
 export const Experience = ({ isPreviewMode, activeCar }) => {
-    const { camera } = useThree()
+    const { camera, scene } = useThree()
     const modelRef = useRef()
     const orbitAngle = useRef(0)
 
-    // Reusable hook manages all the GSAP scroll animations
-    useCarAnimation(isPreviewMode, orbitAngle);
+    // Cinematic Idle System State
+    const [isIdle, setIsIdle] = useState(true) // Start idle for Hero
+    const [currentShot, setCurrentShot] = useState(0)
+    const [isAtTop, setIsAtTop] = useState(window.scrollY < 10)
+    const lastActivity = useRef(Date.now())
+    const controlsRef = useRef()
+
+    const shots = [
+        { pos: [8, 2, 8], target: [0, 0.5, 0], fov: 35 },     // Classic 3/4 Front
+        { pos: [-9, 1.5, 0], target: [0, 0.4, 0], fov: 30 },  // Side Profile
+        { pos: [0, 2, -10], target: [0, 0.6, 0], fov: 40 },   // Rear High
+        { pos: [4, 0.2, 5], target: [0, 0.2, 0], fov: 25 },   // Low Front Detail
+        { pos: [0, 8, 2], target: [0, 0, 0], fov: 45 },      // Top Down
+    ]
+
+    useCarAnimation(isPreviewMode || (isIdle && isAtTop), orbitAngle);
+
+    // Activity & Scroll Detection
+    useEffect(() => {
+        const handleScroll = () => {
+            const top = window.scrollY < 10
+            setIsAtTop(top)
+            if (!top) {
+                lastActivity.current = Date.now()
+                setIsIdle(false)
+            }
+        }
+
+        const handleMove = () => {
+            lastActivity.current = Date.now()
+            if (isIdle) setIsIdle(false)
+        }
+
+        window.addEventListener('scroll', handleScroll)
+        window.addEventListener('mousemove', handleMove)
+        window.addEventListener('mousedown', handleMove)
+        window.addEventListener('touchstart', handleMove)
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll)
+            window.removeEventListener('mousemove', handleMove)
+            window.removeEventListener('mousedown', handleMove)
+            window.removeEventListener('touchstart', handleMove)
+        }
+    }, [isIdle])
+
+    // Idle Timer & Sequencer
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const now = Date.now()
+            // If in Preview OR at Hero top, check for idle
+            if (isPreviewMode || isAtTop) {
+                if (now - lastActivity.current > 5000 && !isIdle) {
+                    setIsIdle(true)
+                }
+            }
+        }, 1000)
+
+        const shotInterval = setInterval(() => {
+            if (isIdle) {
+                setCurrentShot(prev => (prev + 1) % shots.length)
+            }
+        }, 8000)
+
+        return () => {
+            clearInterval(interval)
+            clearInterval(shotInterval)
+        }
+    }, [isPreviewMode, isAtTop, isIdle])
+
+    useEffect(() => {
+        if (isIdle && (isPreviewMode || isAtTop)) {
+            const shot = shots[currentShot]
+            gsap.to(camera.position, {
+                x: shot.pos[0],
+                y: shot.pos[1],
+                z: shot.pos[2],
+                duration: 2.5,
+                ease: "power2.inOut"
+            })
+            gsap.to(camera, {
+                fov: shot.fov,
+                duration: 2.5,
+                onUpdate: () => camera.updateProjectionMatrix()
+            })
+        }
+    }, [currentShot, isIdle, isPreviewMode, isAtTop])
 
     useFrame((state, delta) => {
-        if (!isPreviewMode) {
+        if (!isPreviewMode && !isIdle) {
             if (modelRef.current) {
                 modelRef.current.rotation.y = gsap.utils.interpolate(modelRef.current.rotation.y, 0, 0.1);
             }
             camera.lookAt(0, 0.3, 0);
+        } else if (isIdle) {
+            // Slow cinematic drift 
+            const time = state.clock.getElapsedTime()
+            camera.position.x += Math.sin(time * 0.15) * 0.003
+            camera.position.y += Math.cos(time * 0.15) * 0.001
+            camera.lookAt(0, 0.4, 0)
         }
     })
+
+    const onUserInteraction = () => {
+        // This function is now largely redundant as activity is tracked globally
+        // but can be kept for specific OrbitControls interactions if needed.
+        lastActivity.current = Date.now()
+        if (isIdle) setIsIdle(false)
+    }
 
     const renderCar = () => {
         switch (activeCar) {
@@ -40,21 +138,25 @@ export const Experience = ({ isPreviewMode, activeCar }) => {
 
     return (
         <>
-            {isPreviewMode && (
+            {(isPreviewMode || isAtTop) && (
                 <OrbitControls
+                    ref={controlsRef}
                     makeDefault
-                    autoRotate
+                    autoRotate={!isIdle && !isAtTop}
                     autoRotateSpeed={0.5}
-                    enableZoom={true}
+                    enableZoom={isPreviewMode}
                     enablePan={false}
                     minPolarAngle={0}
                     maxPolarAngle={Math.PI / 1.75}
-                    minDistance={5}
+                    minDistance={4}
                     maxDistance={15}
                     enableDamping
                     dampingFactor={0.05}
+                    onChange={onUserInteraction}
+                    onStart={onUserInteraction}
                 />
             )}
+            {/* ... rest of light and model code stays same ... */}
             {/* === CINEMATIC STUDIO LIGHTING === */}
             <ambientLight intensity={0.01} />
 
