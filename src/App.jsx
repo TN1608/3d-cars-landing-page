@@ -28,12 +28,15 @@ function App() {
             // Force scroll to top instantly
             window.scrollTo({ top: 0, behavior: 'instant' });
 
-            // Small delay to allow preloader to show before 3D swaps
+            // Tiny delay just to ensure the loading state catches up
+            // before we allow it to hide again.
             setTimeout(() => {
                 setIsChangingCar(false);
-            }, 1000);
+            }, 100);
         };
 
+        // Don't run on initial mount for activeCar change, only on subsequent changes
+        // Wait, activeCar starts with CARS[0].id.
         handleCarChange();
     }, [activeCar]);
 

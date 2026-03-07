@@ -17,26 +17,29 @@ export const Preloader = ({ isChangingCar }) => {
                 onComplete: () => setShow(false)
             });
 
+            // Fast, punchy exit animation so user doesn't wait
             tl.to(textRef.current, {
-                y: -20,
+                y: -10,
                 opacity: 0,
-                duration: 0.5,
+                duration: 0.3,
                 ease: "power2.in"
             })
                 .to(barRef.current, {
                     scaleX: 0,
-                    duration: 0.8,
+                    duration: 0.4,
                     ease: "power4.inOut"
                 }, "-=0.2")
                 .to(containerRef.current, {
                     y: "-100%",
-                    duration: 1,
+                    duration: 0.6,
                     ease: "power4.inOut"
-                }, "-=0.4");
+                }, "-=0.2");
         } else {
             setShow(true);
+            gsap.killTweensOf([containerRef.current, textRef.current, barRef.current]);
             gsap.set(containerRef.current, { y: "0%" });
             gsap.set(textRef.current, { y: 0, opacity: 1 });
+            // Ensure bar immediately reflects current progress without animating back from 0 if it was already partly loaded
         }
     }, [active, progress, isChangingCar]);
 
